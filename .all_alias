@@ -1,1 +1,4 @@
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+alias ham='ssh scxn98@hamilton8.dur.ac.uk'
+alias srvmnt='sudo mount -t cifs -o username=scxn98,domain=MDS,vers=3,uid=$(id -u),gid=$(id -g) //prsblue02.mds.ad.dur.ac.uk/scxn98/prs ./srvrMount/'
+alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
