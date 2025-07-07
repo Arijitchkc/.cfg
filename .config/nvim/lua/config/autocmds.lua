@@ -131,3 +131,12 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
     vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
   end,
 })
+
+-- Auto-detect custom filetype for *.foo files
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = { "*.prm" }, -- Change "foo" to your file extension
+  callback = function()
+    vim.bo.filetype = "prm"
+    vim.bo.commentstring = "# %s" -- Change to your desired comment style
+  end,
+})
