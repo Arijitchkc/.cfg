@@ -18,13 +18,13 @@ $character"""
 [hostname]
 ssh_only = false
 format = '[$ssh_symbol](bold blue)[$hostname](bold blue): '
-trim_at = '.companyname.com'
+trim_at = '.'
 disabled = false
 
 [username]
 style_user = 'bold cyan'
 style_root = 'black bold'
-format = '[$user]($style)[@]($style)'
+format = '[$user]($style)[ @ ]($style)'
 disabled = false
 show_always = true
 
@@ -56,6 +56,7 @@ symbol = ""
 style = "bold red"
 number_threshold = 1
 format = "[$symbol]($style)"
+
 
 [git_status]
 format = '([\[$all_status$ahead_behind\]]($style) )'
