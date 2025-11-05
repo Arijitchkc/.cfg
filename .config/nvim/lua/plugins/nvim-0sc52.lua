@@ -1,13 +1,17 @@
 return {
   "ojroques/nvim-osc52",
   config = function()
-    require("osc52").setup({ silent = true })
+    local osc52 = require("osc52")
+    osc52.setup({
+      silent = true, -- don’t echo messages
+    })
+
+    -- Copy every yank to macOS clipboard, whether visual or not
     vim.api.nvim_create_autocmd("TextYankPost", {
       callback = function()
-        if not vim.v.event.visual then
-          return
+        if vim.v.event.operator == "y" and vim.v.event.regname == "" then
+          osc52.copy_register("+")
         end
-        require("osc52").copy_register('"')
       end,
     })
   end,
