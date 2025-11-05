@@ -1,7 +1,7 @@
 -- Options are automatically loaded before lazy.nvim startup
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
----- This file is automatically loaded by plugins.core
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
@@ -113,15 +113,27 @@ opt.virtualedit = "block" -- Allow cursor to move where there is no text in visu
 opt.wildmode = "longest:full,full" -- Command-line completion mode
 opt.winminwidth = 5 -- Minimum window width
 opt.wrap = true -- Disable line wrap
+opt.textwidth = 160
+opt.wrapmargin = 0
+-- if vim.fn.has("nvim-0.10") == 1 then
+--   opt.smoothscroll = true
+--   opt.foldexpr = "v:lua.require'lazyvim.util'.ui.foldexpr()"
+--   opt.foldmethod = "expr"
+--   opt.foldtext = ""
+-- else
+--   opt.foldmethod = "indent"
+--   opt.foldtext = "v:lua.require'lazyvim.util'.ui.foldtext()"
+-- end
 
 if vim.fn.has("nvim-0.10") == 1 then
   opt.smoothscroll = true
-  opt.foldexpr = "v:lua.require'lazyvim.util'.ui.foldexpr()"
+  -- New Tree-sitter folding API
   opt.foldmethod = "expr"
+  opt.foldexpr = "v:lua.require'lazyvim.util'.treesitter.foldexpr()"
   opt.foldtext = ""
 else
   opt.foldmethod = "indent"
-  opt.foldtext = "v:lua.require'lazyvim.util'.ui.foldtext()"
+  opt.foldtext = "v:lua.require'lazyvim.util'.treesitter.foldtext()"
 end
 
 -- Fix markdown indentation settings

@@ -1,10 +1,7 @@
 -- Keymaps are automatically loaded on the VeryLazy event
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
----- This file is automatically loaded by lazyvim.config.init
 
--- DO NOT USE `LazyVim.safe_keymap_set` IN YOUR OWN CONFIG!!
--- use `vim.keymap.set` instead
 local map = LazyVim.safe_keymap_set
 
 -- better up/down
@@ -61,12 +58,7 @@ end, { expr = true, desc = "Escape and Clear hlsearch" })
 
 -- Clear search, diff update and redraw
 -- taken from runtime/lua/_editor.lua
-map(
-  "n",
-  "<leader>ur",
-  "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
-  { desc = "Redraw / Clear hlsearch / Diff Update" }
-)
+map("n", "<leader>ur", "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>", { desc = "Redraw / Clear hlsearch / Diff Update" })
 
 -- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
 map("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "Next Search Result" })
@@ -226,3 +218,21 @@ if vim.fn.has("nvim-0.11") == 0 then
     return vim.snippet.active({ direction = -1 }) and "<cmd>lua vim.snippet.jump(-1)<cr>" or "<S-Tab>"
   end, { expr = true, desc = "Jump Previous" })
 end
+
+
+-- Inlay hints
+map("n", "<leader>ih", function()
+  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+end, { desc = "Toggle Inlay Hints" })
+
+vim.keymap.set("n", "<leader>ld", function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local enabled = not vim.diagnostic.is_enabled(bufnr)
+  if enabled then
+    vim.diagnostic.disable(bufnr)
+    vim.notify("Diagnostics disabled", vim.log.levels.INFO)
+  else
+    vim.diagnostic.enable(bufnr)
+    vim.notify("Diagnostics enabled", vim.log.levels.INFO)
+  end
+end, { desc = "Toggle LSP Diagnostics" })
