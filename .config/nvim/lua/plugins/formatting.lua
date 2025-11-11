@@ -1,11 +1,7 @@
 return {
-  {
-    "stevearc/conform.nvim",
-    event = { "BufWritePre" },
-    opts = {
-      formatters_by_ft = {
-        python = { "black" }, -- or "ruff_format"
-      },
-    },
+  "stevearc/conform.nvim",
+  opts = {},
+  formatters_by_ft = {
+    python = { "isort", "black" },
   },
 }
