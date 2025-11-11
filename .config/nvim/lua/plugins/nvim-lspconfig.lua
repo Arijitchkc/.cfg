@@ -181,7 +181,7 @@ return {
         pyright = {
           settings = {
             python = {
-              pythonPath = "/Users/arijit/installations/miniconda3/envs/gryffindor/bin/python",
+              pythonPath = "/nobackup/scxn98/installations/miniconda3/envs/gryffindor/bin/python",
             },
           },
         },
