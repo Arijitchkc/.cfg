@@ -64,7 +64,7 @@ return {
       servers = {
         clangd = {
           cmd = {
-            "clangd-17",
+            "/opt/homebrew/opt/llvm/bin/clangd",
             "--background-index",
             "--clang-tidy",
             "--header-insertion=never",
@@ -72,7 +72,7 @@ return {
             "--completion-style=detailed",
             "--compile-commands-dir=./build",
           },
-          filetypes = { "c", "cpp", "objc", "objcpp" },
+          filetypes = { "c", "cpp", "objc", "objcpp", "cc" },
         },
         -- configuration for all lsp servers
         ["*"] = {
