@@ -62,8 +62,32 @@ return {
       ---@alias lazyvim.lsp.Config vim.lsp.Config|{mason?:boolean, enabled?:boolean, keys?:LazyKeysLspSpec[]}
       ---@type table<string, lazyvim.lsp.Config|boolean>
       servers = {
+        texlab = {
+          settings = {
+            texlab = {
+              build = {
+                executable = "latexmk",
+                args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
+                onSave = true,
+                forwardSearchAfter = true,
+              },
+              forwardSearch = {
+                executable = "open",
+                args = { "-a", "Skim", "%p" },
+              },
+              auxDirectory = ".",
+              bibtexFormatter = "texlab",
+              latexFormatter = "latexindent",
+              latexindent = {
+                ["local"] = nil,
+                modifyLineBreaks = true,
+              },
+            },
+          },
+        },
+
         clangd = {
-          cmd = {
+            cmd = {
             "/opt/homebrew/opt/llvm/bin/clangd",
             "--background-index",
             "--clang-tidy",
@@ -73,6 +97,12 @@ return {
             "--compile-commands-dir=./build",
           },
           filetypes = { "c", "cpp", "objc", "objcpp", "cc" },
+
+          on_attach = function(client, bufnr)
+            -- Disable LSP formatting so conform.nvim takes over
+            client.server_capabilities.documentFormattingProvider = false
+            client.server_capabilities.documentRangeFormattingProvider = false
+          end,
         },
         -- configuration for all lsp servers
         ["*"] = {
