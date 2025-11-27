@@ -6,7 +6,7 @@ return {
       local lint = require("lint")
 
       lint.linters_by_ft = {
-        python = { "ruff", "pylint" }, -- choose one or both
+        python = { "pylint" }, -- choose one or both
       }
 
       vim.api.nvim_create_autocmd({ "BufWritePost" }, {

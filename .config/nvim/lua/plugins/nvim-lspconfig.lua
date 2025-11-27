@@ -62,9 +62,33 @@ return {
       ---@alias lazyvim.lsp.Config vim.lsp.Config|{mason?:boolean, enabled?:boolean, keys?:LazyKeysLspSpec[]}
       ---@type table<string, lazyvim.lsp.Config|boolean>
       servers = {
+        texlab = {
+          settings = {
+            texlab = {
+              build = {
+                executable = "latexmk",
+                args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
+                onSave = true,
+                forwardSearchAfter = true,
+              },
+              forwardSearch = {
+                executable = "open",
+                args = { "-a", "Skim", "%p" },
+              },
+              auxDirectory = ".",
+              bibtexFormatter = "texlab",
+              latexFormatter = "latexindent",
+              latexindent = {
+                ["local"] = nil,
+                modifyLineBreaks = true,
+              },
+            },
+          },
+        },
+
         clangd = {
-          cmd = {
-            "clangd-17",
+            cmd = {
+            "/opt/homebrew/opt/llvm/bin/clangd",
             "--background-index",
             "--clang-tidy",
             "--header-insertion=never",
@@ -72,7 +96,13 @@ return {
             "--completion-style=detailed",
             "--compile-commands-dir=./build",
           },
-          filetypes = { "c", "cpp", "objc", "objcpp" },
+          filetypes = { "c", "cpp", "objc", "objcpp", "cc" },
+
+          on_attach = function(client, bufnr)
+            -- Disable LSP formatting so conform.nvim takes over
+            client.server_capabilities.documentFormattingProvider = false
+            client.server_capabilities.documentRangeFormattingProvider = false
+          end,
         },
         -- configuration for all lsp servers
         ["*"] = {
@@ -185,6 +215,21 @@ return {
             },
           },
         },
+        jsonls = {
+          filetypes = { "prm" },
+          settings = {
+            json = {
+              schemas = {
+                {
+                  description = "ASPECT Parameters",
+                  fileMatch = { "*.json", "*.prm" },
+                  -- url = "/Users/arijit/.config/nvim/aspect_data/aspect_schema.json",
+                  url = "file://" .. vim.fn.expand("~/.config/nvim/aspect_data/aspect_schema.json"),
+                },
+              },
+            },
+          },
+        },
       },
       -- you can do any additional lsp server setup here
       -- return true if you don't want this server to be setup with lspconfig
@@ -216,11 +261,7 @@ return {
     -- inlay hints
     if opts.inlay_hints.enabled then
       Snacks.util.lsp.on({ method = "textDocument/inlayHint" }, function(buffer)
-        if
-          vim.api.nvim_buf_is_valid(buffer)
-          and vim.bo[buffer].buftype == ""
-          and not vim.tbl_contains(opts.inlay_hints.exclude, vim.bo[buffer].filetype)
-        then
+        if vim.api.nvim_buf_is_valid(buffer) and vim.bo[buffer].buftype == "" and not vim.tbl_contains(opts.inlay_hints.exclude, vim.bo[buffer].filetype) then
           vim.lsp.inlay_hint.enable(true, { bufnr = buffer })
         end
       end)
@@ -273,9 +314,7 @@ return {
 
     -- get all the servers that are available through mason-lspconfig
     local have_mason = LazyVim.has("mason-lspconfig.nvim")
-    local mason_all = have_mason
-        and vim.tbl_keys(require("mason-lspconfig.mappings").get_mason_map().lspconfig_to_package)
-      or {} --[[ @as string[] ]]
+    local mason_all = have_mason and vim.tbl_keys(require("mason-lspconfig.mappings").get_mason_map().lspconfig_to_package) or {} --[[ @as string[] ]]
     local mason_exclude = {} ---@type string[]
 
     ---@return boolean? exclude automatic setup

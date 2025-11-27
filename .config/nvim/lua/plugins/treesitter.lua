@@ -9,8 +9,6 @@ return {
       "lua",
       "python",
       "bash",
-      "c",
-      "cpp",
       "json",
       "yaml",
       "markdown",

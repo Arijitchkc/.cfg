@@ -236,3 +236,6 @@ vim.keymap.set("n", "<leader>ld", function()
     vim.notify("Diagnostics enabled", vim.log.levels.INFO)
   end
 end, { desc = "Toggle LSP Diagnostics" })
+
+map('n', '<leader>lg', ":LazyGrep<CR>", { noremap = true, silent = true })
+map('n', '<leader>ld', ":LazyGrepDocs<CR>", { noremap = true, silent = true })
