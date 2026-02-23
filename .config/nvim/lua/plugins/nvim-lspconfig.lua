@@ -87,14 +87,19 @@ return {
         },
 
         clangd = {
-            cmd = {
-            "/opt/homebrew/opt/llvm/bin/clangd",
+          cmd = {
+            "clangd",
             "--background-index",
             "--clang-tidy",
             "--header-insertion=never",
-            "--cross-file-rename",
-            "--completion-style=detailed",
-            "--compile-commands-dir=./build",
+            "--completion-style=bundled",
+            "--function-arg-placeholders",
+            "--fallback-style=llvm",
+            "--all-scopes-completion",
+            "--completion-parse=auto",
+            "--pch-storage=memory",
+            "--ranking-model=heuristics",
+            "--query-driver=/usr/bin/g++,/usr/bin/gcc,/usr/local/bin/g++,/usr/local/bin/gcc",
           },
           filetypes = { "c", "cpp", "objc", "objcpp", "cc" },
 
@@ -208,13 +213,26 @@ return {
             },
           },
         },
-        pyright = {
+        -- pyright = {
+        --   settings = {
+        --     python = {
+        --       pythonPath = "/nobackup/scxn98/installations/miniconda3/envs/gryffindor/bin/python",
+        --     },
+        --   },
+        -- },
+        pylsp = {
           settings = {
-            python = {
-              pythonPath = "/nobackup/scxn98/installations/miniconda3/envs/gryffindor/bin/python",
+            pylsp = {
+              plugins = {
+                pylint = { enabled = true },
+                pyflakes = { enabled = false },
+                pycodestyle = { enabled = false },
+                mccabe = { enabled = false },
+              },
             },
           },
         },
+
         jsonls = {
           filetypes = { "prm" },
           settings = {

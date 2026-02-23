@@ -15,6 +15,8 @@ return {
       "markdown_inline",
       "vim",
       "vimdoc",
+      "cpp",
+      "c"
     },
 
     sync_install = false,

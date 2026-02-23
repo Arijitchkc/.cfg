@@ -22,6 +22,15 @@ vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
   end,
 })
 
+vim.api.nvim_create_autocmd("FileType", {
+  group = augroup("cpp_indent"),
+  pattern = { "cpp", "c" },
+  callback = function()
+    vim.bo.cindent = true
+    vim.opt_local.cinkeys = vim.opt_local.cinkeys - "0#"  -- stops # from removing indent
+  end,
+})
+
 -- Highlight on yank
 vim.api.nvim_create_autocmd("TextYankPost", {
   group = augroup("highlight_yank"),
