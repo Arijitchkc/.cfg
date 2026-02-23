@@ -16,9 +16,7 @@ return {
       --   stdin = false,
       -- },
       astyle = {
-        -- Path to your specific ASPECT astyle version
-        command = "astyle",
-        -- These args match the ASPECT 'make indent' logic
+        command = "/nobackup/scxn98/installations/astyle/astyle/build/gcc/bin/astyle",
         args = { "--options=" .. vim.fn.expand(vim.fn.stdpath("config") .. "/aspect_data/astyle.rc") },
       },
       ruff_format = {
