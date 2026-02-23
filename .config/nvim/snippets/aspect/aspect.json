@@ -1,0 +1,19 @@
+{
+    "Subsection modelule": {
+		"prefix": "subsection",
+		"body": [
+			"subsection$1",
+			"\t",
+			"end"
+		],
+		"description": "Write a new subsection"
+	},
+	"Set parameter": {
+		"prefix": "set",
+		"body": [
+			"set$1  ="
+		],
+		"description": "Set a new parameter"
+	}
+}
+

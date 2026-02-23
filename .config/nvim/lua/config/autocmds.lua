@@ -27,7 +27,7 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = { "cpp", "c" },
   callback = function()
     vim.bo.cindent = true
-    vim.opt_local.cinkeys = vim.opt_local.cinkeys - "0#"  -- stops # from removing indent
+    vim.opt_local.cinkeys = vim.opt_local.cinkeys - "0#" -- stops # from removing indent
   end,
 })
 
@@ -148,4 +148,11 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
     vim.bo.filetype = "prm"
     vim.bo.commentstring = "# %s"
   end,
+})
+
+vim.filetype.add({
+  extension = {
+    prm = "aspect",
+    aspect = "aspect",
+  },
 })

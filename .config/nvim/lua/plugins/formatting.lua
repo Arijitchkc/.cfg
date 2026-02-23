@@ -3,23 +3,32 @@ return {
   opts = function(_, opts)
     -- Merge with existing LazyVim opts
     opts.formatters_by_ft = vim.tbl_extend("force", opts.formatters_by_ft or {}, {
-      cpp = { "astyle_aspect" },
-      c = { "astyle_aspect" },
-      python = { "ruff_format" },
+      cpp = { "astyle" },
+      cc = { "astyle" },
+      python = { "ruff_fix", "ruff_format" },
     })
     opts.formatters = vim.tbl_extend("force", opts.formatters or {}, {
-      astyle_aspect = {
+      -- astyle_aspect = {
+      --   command = "astyle",
+      --   args = {
+      --     "--options=" .. vim.fn.expand("~/.config/nvim/astyle.rc"),
+      --   },
+      --   stdin = false,
+      -- },
+      astyle = {
+        -- Path to your specific ASPECT astyle version
         command = "astyle",
-        args = {
-          "--options=" .. vim.fn.expand("~/.config/nvim/astyle.rc"),
-        },
-        stdin = false,
+        -- These args match the ASPECT 'make indent' logic
+        args = { "--options=" .. vim.fn.expand(vim.fn.stdpath("config") .. "/aspect_data/astyle.rc") },
       },
       ruff_format = {
         -- Ruff requires 'format' subcommand with args after it
         args = { "format", "--line-length", "120", "-" },
       },
     })
+    opts.format_on_save = {
+      timeout_ms = 1000,
+      lsp_fallback = true,
+    }
   end,
 }
-
