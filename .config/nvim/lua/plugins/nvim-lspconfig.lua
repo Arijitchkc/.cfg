@@ -67,7 +67,7 @@ return {
             texlab = {
               build = {
                 executable = "latexmk",
-                args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
+                args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "-biber", "%f" },
                 onSave = true,
                 forwardSearchAfter = true,
               },
@@ -90,6 +90,9 @@ return {
           cmd = {
             "clangd",
             "--background-index",
+            "-j=4",
+            "--limit-references=100",
+            "--limit-results=100",
             "--clang-tidy",
             "--header-insertion=never",
             "--completion-style=bundled",
@@ -102,7 +105,31 @@ return {
             "--query-driver=/usr/bin/g++,/usr/bin/gcc,/usr/local/bin/g++,/usr/local/bin/gcc",
           },
           filetypes = { "c", "cpp", "objc", "objcpp", "cc" },
+          keys = {
+            {
+              "<leader>ch",
+              function()
+                local bufnr = vim.api.nvim_get_current_buf()
+                -- Compatibility for both Neovim 0.9 and 0.10+
+                local get_clients = vim.lsp.get_clients or vim.lsp.get_active_clients
+                local clients = get_clients({ name = "clangd", bufnr = bufnr })
 
+                if #clients == 0 then
+                  vim.notify("Clangd is not attached to this buffer!", vim.log.levels.WARN)
+                  return
+                end
+
+                clients[1].request("textDocument/switchSourceHeader", { uri = vim.uri_from_bufnr(bufnr) }, function(err, result)
+                  if err or not result then
+                    vim.notify("Corresponding header/source file not found!", vim.log.levels.WARN)
+                    return
+                  end
+                  vim.cmd("edit " .. vim.uri_to_fname(result))
+                end, bufnr)
+              end,
+              desc = "Switch Source/Header (C++)",
+            },
+          },
           on_attach = function(client, bufnr)
             -- Disable LSP formatting so conform.nvim takes over
             client.server_capabilities.documentFormattingProvider = false
