@@ -68,8 +68,8 @@ return {
               build = {
                 executable = "latexmk",
                 args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "-biber", "%f" },
-                onSave = true,
-                forwardSearchAfter = true,
+                onSave = false,
+                forwardSearchAfter = false,
               },
               forwardSearch = {
                 executable = "open",
@@ -207,7 +207,7 @@ return {
         },
         harper_ls = {
           enabled = true,
-          filetypes = { "markdown", "tex", "txt" },
+          filetypes = { "markdown", "txt" },
           root_dir = function(fname)
             local ft = vim.bo.filetype
             local allowed = { markdown = true, tex = true, txt = true }

@@ -23,6 +23,9 @@ return {
         -- Ruff requires 'format' subcommand with args after it
         args = { "format", "--line-length", "120", "-" },
       },
+      ruff_fix = {
+        prepend_args = { "--unfixable=F401" },
+      },
     })
     opts.format_on_save = {
       timeout_ms = 1000,

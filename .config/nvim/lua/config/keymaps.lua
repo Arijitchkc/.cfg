@@ -239,3 +239,8 @@ end, { desc = "Toggle LSP Diagnostics" })
 
 map('n', '<leader>lg', ":LazyGrep<CR>", { noremap = true, silent = true })
 map('n', '<leader>ld', ":LazyGrepDocs<CR>", { noremap = true, silent = true })
+
+
+
+-- changing x
+map({ "n", "v" }, "x", '"_x', { desc = "Delete character (no yank)" })
