@@ -100,7 +100,7 @@ return {
             "--fallback-style=llvm",
             "--all-scopes-completion",
             "--completion-parse=auto",
-            "--pch-storage=memory",
+            "--pch-storage=disk",
             "--ranking-model=heuristics",
             "--query-driver=/usr/bin/g++,/usr/bin/gcc,/usr/local/bin/g++,/usr/local/bin/gcc",
           },
