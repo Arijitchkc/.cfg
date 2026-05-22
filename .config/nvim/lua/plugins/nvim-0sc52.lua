@@ -1,5 +1,6 @@
 return {
   "ojroques/nvim-osc52",
+  event = "VeryLazy",
   config = function()
     local osc52 = require("osc52")
     osc52.setup({

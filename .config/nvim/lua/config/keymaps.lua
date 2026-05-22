@@ -2,6 +2,66 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
+--[[ ────────────────────────────────────────────────────────────────────
+   LONG-FILE NAVIGATION CHEATSHEET (built from your current setup)
+   ────────────────────────────────────────────────────────────────────
+
+   FAST JUMP ANYWHERE ON SCREEN  (flash.nvim)
+     s {char}{char}      Jump to any visible 2-char pattern
+     S                   Jump to enclosing treesitter scope
+
+   SYMBOL OUTLINE / FUZZY-FIND IN BUFFER
+     <leader>ss          Document symbols picker (functions/classes/vars)
+     <leader>cs          Trouble symbols (docked outline sidebar)
+     <leader>jc          Jump up to the enclosing scope header (treesitter-context)
+
+   LSP NAVIGATION
+     gd                  Goto definition
+     gr                  References
+     gI                  Implementation
+     gy                  Type definition
+     gD                  Declaration
+     K                   Hover documentation
+     <leader>cr          Rename symbol
+     <leader>ch          Switch between .cpp / .h (C++)
+     ]] / [[             Next / prev reference under cursor
+
+   TREESITTER TEXT OBJECTS
+     vaf / vif           Select around / inside function
+     vac / vic           Select around / inside class
+     daf / dif           Delete around / inside function
+     yaf / yic           Yank around function / yank inside class
+
+   INCREMENTAL SELECTION (treesitter)
+     gnn                 Start
+     grn                 Expand to next node
+     grc                 Expand to scope
+     grm                 Shrink
+
+   FOLDS  (treesitter folding is on)
+     za                  Toggle fold under cursor
+     zo / zc             Open / close fold
+     zR / zM             Open all / close all folds
+     zj / zk             Jump to next / prev fold
+
+   CONTEXT HEADER  (treesitter-context, always-on)
+     Top of window shows enclosing namespace::class::function automatically.
+     <leader>jc jumps the cursor up onto that header line.
+
+   DIAGNOSTICS
+     ]d / [d             Next / prev diagnostic
+     ]e / [e             Next / prev error
+     <leader>cd          Show diagnostic float
+     <leader>ld          Toggle LSP diagnostics in buffer
+
+   BUFFERS & WINDOWS
+     [b / ]b             Prev / next buffer
+     <Tab> / <S-Tab>     Move buffer right / left in bufferline
+     <C-h/j/k/l>         Move between windows
+     <leader>wm          Zoom current window (toggle)
+     <leader>uz          Zen mode toggle
+   ──────────────────────────────────────────────────────────────────── ]]
+
 local map = LazyVim.safe_keymap_set
 
 -- better up/down
@@ -237,8 +297,8 @@ vim.keymap.set("n", "<leader>ld", function()
   end
 end, { desc = "Toggle LSP Diagnostics" })
 
-map('n', '<leader>lg', ":LazyGrep<CR>", { noremap = true, silent = true })
-map('n', '<leader>ld', ":LazyGrepDocs<CR>", { noremap = true, silent = true })
+map("n", "<leader>lg", ":LazyGrep<CR>", { noremap = true, silent = true })
+map("n", "<leader>lG", ":LazyGrepDocs<CR>", { noremap = true, silent = true })
 
 
 

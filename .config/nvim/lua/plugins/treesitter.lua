@@ -1,8 +1,8 @@
 return {
+  {
   "nvim-treesitter/nvim-treesitter",
   branch = "master",
   build = ":TSUpdate", -- auto update parsers after install
-  lazy = false, -- load early (important for syntax)
   event = { "BufReadPost", "BufNewFile" },
   opts = {
     ensure_installed = {
@@ -58,4 +58,29 @@ return {
   config = function(_, opts)
     require("nvim-treesitter.configs").setup(opts)
   end,
+  },
+
+  -- Sticky scope header at top of window (great for long C++ files)
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    event = { "BufReadPost", "BufNewFile" },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    opts = {
+      max_lines = 3, -- cap header height so it never eats the screen
+      min_window_height = 20, -- skip on small windows
+      multiline_threshold = 1, -- collapse multiline signatures to one line
+      mode = "cursor", -- track context by cursor, not topline
+      trim_scope = "outer", -- when over max_lines, drop the outermost scope
+      separator = nil,
+    },
+    keys = {
+      {
+        "<leader>jc",
+        function()
+          require("treesitter-context").go_to_context(vim.v.count1)
+        end,
+        desc = "Jump to context (outer scope)",
+      },
+    },
+  },
 }

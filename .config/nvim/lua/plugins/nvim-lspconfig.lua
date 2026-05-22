@@ -21,6 +21,12 @@ return {
           -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
           -- prefix = "icons",
         },
+        float = {
+          border = "rounded",
+          source = "if_many",
+          header = "",
+          prefix = "",
+        },
         severity_sort = true,
         signs = {
           text = {
