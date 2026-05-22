@@ -142,6 +142,46 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   end,
 })
 
+-- Cursorline only in the focused window
+vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter" }, {
+  group = augroup("active_cursorline_on"),
+  callback = function()
+    vim.wo.cursorline = true
+  end,
+})
+vim.api.nvim_create_autocmd("WinLeave", {
+  group = augroup("active_cursorline_off"),
+  callback = function()
+    vim.wo.cursorline = false
+  end,
+})
+
+-- Slightly dim inactive window backgrounds (NormalNC)
+-- Applied after colorscheme loads so onedark groups exist
+vim.api.nvim_create_autocmd("ColorScheme", {
+  group = augroup("dim_inactive_windows"),
+  callback = function()
+    local ok, normal = pcall(vim.api.nvim_get_hl, 0, { name = "Normal", link = false })
+    if not ok or not normal.bg then
+      return
+    end
+    -- Darken the Normal bg by ~6% for inactive splits
+    local bg = normal.bg
+    local r = math.floor(bg / 65536) % 256
+    local g = math.floor(bg / 256) % 256
+    local b = bg % 256
+    local function darken(c)
+      return math.max(0, math.floor(c * 0.92))
+    end
+    local dim = darken(r) * 65536 + darken(g) * 256 + darken(b)
+    vim.api.nvim_set_hl(0, "NormalNC", { bg = dim })
+  end,
+})
+-- Trigger once on startup since colorscheme is already applied
+vim.schedule(function()
+  vim.cmd("doautocmd ColorScheme")
+end)
+
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   pattern = { "*.prm" },
   callback = function()

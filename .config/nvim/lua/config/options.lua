@@ -112,7 +112,7 @@ opt.updatetime = 200 -- Save swap file and trigger CursorHold
 opt.virtualedit = "block" -- Allow cursor to move where there is no text in visual block mode
 opt.wildmode = "longest:full,full" -- Command-line completion mode
 opt.winminwidth = 5 -- Minimum window width
-opt.wrap = true -- Disable line wrap
+opt.wrap = true -- Enable line wrap
 opt.textwidth = 160
 opt.wrapmargin = 0
 -- if vim.fn.has("nvim-0.10") == 1 then
@@ -139,7 +139,10 @@ end
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0
 
-vim.cmd("colorscheme onedark")
+-- Default border for floating windows (nvim 0.11+); falls back gracefully on older
+if vim.fn.has("nvim-0.11") == 1 then
+  vim.o.winborder = "rounded"
+end
 
 -- LazyVim options
 vim.g.lazygit_floating_window_winblend = 0 -- transparency of floating window
@@ -149,10 +152,6 @@ vim.g.lazygit_floating_window_use_plenary = 0 -- use plenary.nvim to manage floa
 vim.g.lazygit_use_neovim_remote = 1 -- fallback to 0 if neovim-remote is not installed
 
 vim.g.lazygit_use_custom_config_file_path = 0 -- config file path is evaluated if this value is 1
-vim.g.lazygit_config_file_path = "" -- custom config file path
--- OR
-vim.g.lazygit_config_file_path = {} -- table of custom config file paths
-
 vim.g.lazygit_on_exit_callback = nil -- optional function callback when exiting lazygit (useful for example to refresh some UI elements after lazy git has made some changes)
 
 vim.g.vimtex_compiler_method = "pdflatex"

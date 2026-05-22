@@ -1,7 +1,7 @@
 return {
   {
     "lervag/vimtex",
-    lazy = false,
+    ft = { "tex", "latex", "plaintex", "bib" },
     init = function()
       -- Safety (not needed, but OK)
       vim.cmd("filetype plugin indent on")
