@@ -2,7 +2,7 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
---[[ ────────────────────────────────────────────────────────────────────
+--[=[ ────────────────────────────────────────────────────────────────────
    LONG-FILE NAVIGATION CHEATSHEET (built from your current setup)
    ────────────────────────────────────────────────────────────────────
 
@@ -60,7 +60,7 @@
      <C-h/j/k/l>         Move between windows
      <leader>wm          Zoom current window (toggle)
      <leader>uz          Zen mode toggle
-   ──────────────────────────────────────────────────────────────────── ]]
+   ──────────────────────────────────────────────────────────────────── ]=]
 
 local map = LazyVim.safe_keymap_set
 
@@ -98,8 +98,11 @@ map("n", "]b", "<cmd>bnext<cr>", { desc = "Next Buffer" })
 map("n", "<leader>bb", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
 map("n", "<leader>`", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
 
-map("n", "<S-Tab>", "<Cmd>BufferLineMovePrev<CR>", { desc = "Move buffer left" })
-map("n", "<Tab>", "<Cmd>BufferLineMoveNext<CR>", { desc = "Move buffer right" })
+-- map("n", "<S-Tab>", "<Cmd>BufferLineMovePrev<CR>", { desc = "Move buffer left" })
+-- map("n", "<Tab>", "<Cmd>BufferLineMoveNext<CR>", { desc = "Move buffer right" })
+
+map("n", "<S-Tab>", "<cmd>BufferLineMovePrev<cr>", { desc = "Move Buffer Left" })
+map("n", "<Tab>", "<cmd>BufferLineMoveNext<cr>", { desc = "Move Buffer Right" })
 
 map("n", "<leader>bd", function()
   Snacks.bufdelete()
