@@ -246,22 +246,37 @@ return {
             },
           },
         },
-        -- pyright = {
-        --   settings = {
-        --     python = {
-        --       pythonPath = "/nobackup/scxn98/installations/miniconda3/envs/gryffindor/bin/python",
-        --     },
-        --   },
-        -- },
-        pylsp = {
+        basedpyright = {
+          before_init = function(_, config)
+            -- Auto-detect active conda/venv python; falls back to system python
+            local conda = vim.env.CONDA_PREFIX
+            local venv = vim.env.VIRTUAL_ENV
+            local python = (conda or venv) and (conda or venv) .. "/bin/python" or vim.fn.exepath("python3")
+            if python ~= "" then
+              config.settings = config.settings or {}
+              config.settings.python = config.settings.python or {}
+              config.settings.python.pythonPath = python
+            end
+          end,
           settings = {
-            pylsp = {
-              plugins = {
-                pylint = { enabled = true },
-                pyflakes = { enabled = false },
-                pycodestyle = { enabled = false },
-                mccabe = { enabled = false },
+            basedpyright = {
+              -- ruff handles all linting; basedpyright only does type checking
+              disableOrganizeImports = true,
+              analysis = {
+                typeCheckingMode = "off",
+                useLibraryCodeForTypes = true,
+                -- Suppress import errors for packages without type stubs
+                diagnosticSeverityOverrides = {
+                  reportMissingModuleSource = "none",
+                  -- Let ruff own these; avoid duplicates
+                  reportUnusedImport = "none",
+                  reportUnusedVariable = "none",
+                },
               },
+            },
+            python = {
+              -- Auto-detected on macOS; on HPC override via pyrightconfig.json in project root
+              -- pythonPath = "/nobackup/scxn98/installations/miniconda3/envs/gryffindor/bin/python",
             },
           },
         },

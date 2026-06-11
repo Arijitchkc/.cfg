@@ -4,8 +4,22 @@ return {
     keymap = {
       preset = "default",
       ["<CR>"] = { "accept", "fallback" },
-      ["<Tab>"] = { "select_next", "fallback" },
-      ["<S-Tab>"] = { "select_prev", "fallback" },
+      ["<Tab>"] = {
+        function(cmp)
+          if cmp.is_visible() then
+            return cmp.select_next()
+          end
+        end,
+        "fallback",
+      },
+      ["<S-Tab>"] = {
+        function(cmp)
+          if cmp.is_visible() then
+            return cmp.select_prev()
+          end
+        end,
+        "fallback",
+      },
     },
     completion = {
       list = {
@@ -32,6 +46,7 @@ return {
       providers = {
         lsp = {
           score_offset = 0,
+          min_keyword_length = 0,
           -- Penalize long/complex function signatures in sorting
           transform_items = function(_, items)
             for _, item in ipairs(items) do
