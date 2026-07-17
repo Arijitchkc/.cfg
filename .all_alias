@@ -4,6 +4,8 @@ alias eat='cd /nobackup/scxn98/modelsRun/'
 alias srvmnt='sudo mount -t cifs -o username=scxn98,domain=MDS,vers=3,uid=$(id -u),gid=$(id -g) //prsblue02.mds.ad.dur.ac.uk/scxn98/prs ./srvrMount/'
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 alias beast="ssh scxn98b@seismicbeast.earthsci.dur.ac.uk"
+alias beastout="ssh scxn98b@seismicbeast02.earthsci.dur.ac.uk"
+alias fat='cd /Users/arijit/installations/aspect_magemin/aspect/'
 
 # some more ls aliases
 alias ll='ls -alF'

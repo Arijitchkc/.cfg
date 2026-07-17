@@ -42,7 +42,7 @@ return {
       -- provide the inlay hints.
       inlay_hints = {
         enabled = true,
-        exclude = { "vue" }, -- filetypes for which you don't want to enable inlay hints
+        exclude = { "vue", "python" }, -- filetypes for which you don't want to enable inlay hints
       },
       -- Enable this to enable the builtin LSP code lenses on Neovim.
       -- Be aware that you also will need to properly configure your LSP server to
@@ -246,37 +246,36 @@ return {
             },
           },
         },
+        pylsp = { enabled = false },
         basedpyright = {
-          before_init = function(_, config)
-            -- Auto-detect active conda/venv python; falls back to system python
-            local conda = vim.env.CONDA_PREFIX
-            local venv = vim.env.VIRTUAL_ENV
-            local python = (conda or venv) and (conda or venv) .. "/bin/python" or vim.fn.exepath("python3")
-            if python ~= "" then
-              config.settings = config.settings or {}
-              config.settings.python = config.settings.python or {}
-              config.settings.python.pythonPath = python
-            end
-          end,
           settings = {
             basedpyright = {
-              -- ruff handles all linting; basedpyright only does type checking
-              disableOrganizeImports = true,
+              disableOrganizeImports = true, -- ruff handles this
               analysis = {
                 typeCheckingMode = "off",
+                autoSearchPaths = true,
                 useLibraryCodeForTypes = true,
-                -- Suppress import errors for packages without type stubs
+                diagnosticMode = "openFilesOnly",
                 diagnosticSeverityOverrides = {
-                  reportMissingModuleSource = "none",
-                  -- Let ruff own these; avoid duplicates
-                  reportUnusedImport = "none",
-                  reportUnusedVariable = "none",
+                  reportUnknownMemberType = "none",
+                  reportUnknownVariableType = "none",
+                  reportUnknownArgumentType = "none",
+                  reportUnknownParameterType = "none",
+                  reportUnknownLambdaType = "none",
+                  reportMissingTypeStubs = "none",
+                  reportMissingTypeArgument = "none",
+                  reportAny = "none",
+                  reportExplicitAny = "none",
+                  reportUnusedExpression = "none",
+                  reportUnusedCallResult = "none",
+                  reportImplicitStringConcatenation = "none",
+                  reportOptionalSubscript = "none",
+                  reportOptionalMemberAccess = "none",
+                  reportOptionalCall = "none",
+                  reportOptionalIterable = "none",
+                  reportGeneralTypeIssues = "none",
                 },
               },
-            },
-            python = {
-              -- Auto-detected on macOS; on HPC override via pyrightconfig.json in project root
-              -- pythonPath = "/nobackup/scxn98/installations/miniconda3/envs/gryffindor/bin/python",
             },
           },
         },
