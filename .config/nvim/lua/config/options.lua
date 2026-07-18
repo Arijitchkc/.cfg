@@ -26,7 +26,8 @@ vim.g.lazyvim_cmp = "auto"
 
 -- if the completion engine supports the AI source,
 -- use that instead of inline suggestions
-vim.g.ai_cmp = true
+-- Copilot uses Neovim's native ghost text and stays separate from Blink.
+vim.g.ai_cmp = false
 
 -- LazyVim root dir detection
 -- Each entry can be:

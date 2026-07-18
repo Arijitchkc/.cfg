@@ -7,6 +7,26 @@ return {
   },
   opts_extend = { "servers.*.keys" },
   opts = function()
+    local clangd_unity = require("util.clangd_unity")
+    clangd_unity.setup_commands()
+
+    local clangd_base_cmd = {
+      "clangd",
+      "--background-index",
+      "-j=4",
+      "--limit-references=100",
+      "--limit-results=100",
+      "--clang-tidy",
+      "--header-insertion=never",
+      "--completion-style=detailed",
+      "--function-arg-placeholders",
+      "--fallback-style=llvm",
+      "--completion-parse=always",
+      "--pch-storage=memory",
+      "--ranking-model=heuristics",
+      "--query-driver=/usr/bin/c++,/usr/bin/clang,/usr/bin/clang++,/usr/bin/gcc,/usr/bin/g++,/usr/local/bin/c++,/usr/local/bin/clang,/usr/local/bin/clang++,/usr/local/bin/gcc,/usr/local/bin/g++",
+    }
+
     ---@class PluginLspOpts
     local ret = {
       -- options for vim.diagnostic.config()
@@ -93,23 +113,24 @@ return {
         },
 
         clangd = {
-          cmd = {
-            "clangd",
-            "--background-index",
-            "-j=4",
-            "--limit-references=100",
-            "--limit-results=100",
-            "--clang-tidy",
-            "--header-insertion=never",
-            "--completion-style=bundled",
-            "--function-arg-placeholders",
-            "--fallback-style=llvm",
-            "--all-scopes-completion",
-            "--completion-parse=auto",
-            "--pch-storage=memory",
-            "--ranking-model=heuristics",
-            "--query-driver=/usr/bin/g++,/usr/bin/gcc,/usr/local/bin/g++,/usr/local/bin/gcc",
-          },
+          cmd = function(dispatchers, config)
+            local cmd = vim.deepcopy(clangd_base_cmd)
+            local root = config and config.root_dir
+            if root then
+              local database_dir, status = clangd_unity.prepare(root)
+              if database_dir then
+                table.insert(cmd, "--compile-commands-dir=" .. database_dir)
+                if clangd_unity.disable_project_config(root) then
+                  table.insert(cmd, "--enable-config=0")
+                end
+              elseif status and status.state == "error" then
+                vim.schedule(function()
+                  vim.notify("clangd Unity adapter: " .. status.error, vim.log.levels.WARN)
+                end)
+              end
+            end
+            return vim.lsp.rpc.start(cmd, dispatchers)
+          end,
           filetypes = { "c", "cpp", "objc", "objcpp", "cc" },
           keys = {
             {

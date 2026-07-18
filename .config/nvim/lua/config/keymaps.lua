@@ -12,6 +12,7 @@
 
    SYMBOL OUTLINE / FUZZY-FIND IN BUFFER
      <leader>ss          Document symbols picker (functions/classes/vars)
+     <leader>cM          Transient Code Map (symbols/refs/trail/marks)
      <leader>cs          Trouble symbols (docked outline sidebar)
      <leader>jc          Jump up to the enclosing scope header (treesitter-context)
 
@@ -63,6 +64,14 @@
    ──────────────────────────────────────────────────────────────────── ]=]
 
 local map = LazyVim.safe_keymap_set
+
+map("n", "<leader>cM", function()
+  require("config.code_map").open()
+end, { desc = "Code Map" })
+
+vim.api.nvim_create_user_command("CodeMap", function()
+  require("config.code_map").open()
+end, { desc = "Open the transient Code Map", force = true })
 
 -- better up/down
 map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })

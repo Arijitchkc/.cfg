@@ -29,23 +29,24 @@ return {
     },
     sources = {
       default = { "lsp", "path", "snippets", "buffer", "aspect_params" },
+      per_filetype = {
+        c = { "lsp", "path", "snippets" },
+        cpp = { "lsp", "path", "snippets" },
+        objc = { "lsp", "path", "snippets" },
+        objcpp = { "lsp", "path", "snippets" },
+      },
       providers = {
         lsp = {
           score_offset = 0,
-          -- Penalize long/complex function signatures in sorting
-          transform_items = function(_, items)
-            for _, item in ipairs(items) do
-              -- Boost variables and fields, penalize complex functions
-              if item.kind == 6 or item.kind == 5 then -- Variable=6, Field=5
-                item.score_offset = (item.score_offset or 0) + 5
-              elseif item.kind == 3 then -- Function=3
-                -- Penalize if the label looks complex (many params)
-                if item.label and item.label:find(",.*,") then
-                  item.score_offset = (item.score_offset or 0) - 3
-                end
-              end
-            end
-            return items
+          fallbacks = function()
+            local semantic_only = { c = true, cpp = true, objc = true, objcpp = true }
+            return semantic_only[vim.bo.filetype] and {} or { "buffer" }
+          end,
+        },
+        path = {
+          fallbacks = function()
+            local semantic_only = { c = true, cpp = true, objc = true, objcpp = true }
+            return semantic_only[vim.bo.filetype] and {} or { "buffer" }
           end,
         },
         aspect_params = {
