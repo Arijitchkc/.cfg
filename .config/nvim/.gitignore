@@ -6,3 +6,11 @@ debug
 foo.*
 *.log
 data
+.cache/clangd-unity/
+.cache/copilot-download/
+.cache/copilot-smoke/
+.cache/headless-test/
+.checkpoints/
+.state/copilot/
+.state/headless-test/
+bin/copilot-language-server*

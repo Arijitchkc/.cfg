@@ -16,7 +16,7 @@ return {
       --   stdin = false,
       -- },
       astyle = {
-        command = "/nobackup/scxn98/installations/astyle/astyle/build/gcc/bin/astyle",
+        command = "astyle",
         args = { "--options=" .. vim.fn.expand(vim.fn.stdpath("config") .. "/aspect_data/astyle.rc") },
       },
       ruff_format = {

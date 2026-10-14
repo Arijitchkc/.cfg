@@ -7,25 +7,21 @@ local state_dir = config_dir .. "/.state/copilot"
 local privacy_file = state_dir .. "/privacy-confirmed"
 local privacy_url = "https://github.com/settings/copilot/features"
 
-local allowed_filetypes = {
-  c = true,
-  cpp = true,
-  objc = true,
-  objcpp = true,
-  cuda = true,
-  python = true,
-  lua = true,
-  sh = true,
-  bash = true,
-  zsh = true,
-  fish = true,
-  javascript = true,
-  javascriptreact = true,
-  typescript = true,
-  typescriptreact = true,
-  rust = true,
-  go = true,
-  cmake = true,
+-- Manual buffer activation is the consent boundary. Permit arbitrary and
+-- extensionless files and Markdown, while keeping other intentionally
+-- non-code buffers out.
+local blocked_filetypes = {
+  aspect = true,
+  prm = true,
+  text = true,
+  plaintext = true,
+  plaintex = true,
+  tex = true,
+  typst = true,
+  help = true,
+  man = true,
+  gitcommit = true,
+  gitrebase = true,
 }
 
 local sensitive_words = {
@@ -169,8 +165,9 @@ function M.eligibility(bufnr)
   if not vim.bo[bufnr].modifiable then
     return false, "non-modifiable buffer"
   end
-  if not allowed_filetypes[vim.bo[bufnr].filetype] then
-    return false, "unsupported filetype: " .. (vim.bo[bufnr].filetype ~= "" and vim.bo[bufnr].filetype or "none")
+  local filetype = vim.bo[bufnr].filetype
+  if blocked_filetypes[filetype] then
+    return false, "blocked non-code filetype: " .. filetype
   end
 
   local name = vim.api.nvim_buf_get_name(bufnr)
@@ -237,6 +234,12 @@ local function ensure_config()
 
   vim.lsp.config("copilot", {
     cmd = { binary, "--stdio" },
+    -- Neovim uses an empty filetype for names it cannot classify. The LSP
+    -- protocol still requires a language ID, so describe those as plaintext
+    -- without changing the buffer's filetype or filename.
+    get_language_id = function(_, filetype)
+      return filetype ~= "" and filetype or "plaintext"
+    end,
     cmd_env = {
       XDG_CONFIG_HOME = state_dir .. "/xdg",
     },
