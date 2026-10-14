@@ -156,3 +156,9 @@ vim.g.lazygit_use_custom_config_file_path = 0 -- config file path is evaluated i
 vim.g.lazygit_on_exit_callback = nil -- optional function callback when exiting lazygit (useful for example to refresh some UI elements after lazy git has made some changes)
 
 -- vim.g.vimtex_compiler_method = "pdflatex"
+-- Mason on the cluster lives on /nobackup (home quota is small); skip on machines without it.
+if vim.fn.isdirectory("/nobackup/scxn98/installations/mason") == 1 then
+  vim.env.MASON = "/nobackup/scxn98/installations/mason"
+end
+
+vim.g.c_syntax_for_h = 1

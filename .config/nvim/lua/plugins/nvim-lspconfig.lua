@@ -22,7 +22,7 @@ return {
       "--function-arg-placeholders",
       "--fallback-style=llvm",
       "--completion-parse=always",
-      "--pch-storage=memory",
+      "--pch-storage=disk",
       "--ranking-model=heuristics",
       "--query-driver=/usr/bin/c++,/usr/bin/clang,/usr/bin/clang++,/usr/bin/gcc,/usr/bin/g++,/usr/local/bin/c++,/usr/local/bin/clang,/usr/local/bin/clang++,/usr/local/bin/gcc,/usr/local/bin/g++",
     }
