@@ -157,3 +157,5 @@ vim.g.lazygit_on_exit_callback = nil -- optional function callback when exiting 
 vim.g.vimtex_compiler_method = "pdflatex"
 vim.env.MASON = "/nobackup/scxn98/installations/mason"
 
+vim.g.c_syntax_for_h = 1
+
